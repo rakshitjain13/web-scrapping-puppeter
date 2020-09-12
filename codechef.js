@@ -3,8 +3,10 @@ const puppeteer = require("puppeteer");
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto("https://www.codechef.com/users/oneday");
-  const codechef_user = await page.evaluate(() => ({
+  await page.goto("https://www.codechef.com/users/rakshitjain13");
+  const codechef_user = await page.evaluate(() => {
+    if(document.querySelector("div.plr10 h2")){
+      return {
     name: document.querySelector("div.plr10 h2").innerText,
     username: document.querySelector("ul.side-nav li span span:nth-child(2)")
       .innerText,
@@ -18,7 +20,13 @@ const puppeteer = require("puppeteer");
     country_ranking: document.querySelector(
       "ul.inline-list li:nth-child(2) strong"
     ).innerText,
-  }));
+      };
+    }else{
+      return {
+        err:"User Not found"
+      };
+    }
+  });
 
   console.log(codechef_user);
 
